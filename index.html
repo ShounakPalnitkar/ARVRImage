@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CKD Progression Timeline</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #006d5b;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+
+    .stage-card {
+      min-width: 200px;
+      background: #fff;
+      border-left: 6px solid #006d5b;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .stage-card h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #00332e;
+    }
+
+    .stage-card p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+    }
+
+    .stage-card.stage-5 {
+      border-left-color: #e63946;
+    }
+
+    .stage-card.stage-4 {
+      border-left-color: #f4a261;
+    }
+
+    .stage-card.stage-3b,
+    .stage-card.stage-3a {
+      border-left-color: #fbc02d;
+    }
+
+    .stage-card.stage-2 {
+      border-left-color: #90be6d;
+    }
+
+    .stage-card.stage-1 {
+      border-left-color: #43aa8b;
+    }
+  </style>
+</head>
+<body>
+  <h1>CKD Progression Stages</h1>
+  <div class="timeline">
+    <div class="stage-card stage-1">
+      <h2>Stage 1</h2>
+      <p><strong>eGFR:</strong> ≥90</p>
+      <p>Normal kidney function</p>
+    </div>
+    <div class="stage-card stage-2">
+      <h2>Stage 2</h2>
+      <p><strong>eGFR:</strong> 60–89</p>
+      <p>Mild loss of function</p>
+    </div>
+    <div class="stage-card stage-3a">
+      <h2>Stage 3a</h2>
+      <p><strong>eGFR:</strong> 45–59</p>
+      <p>Mild to moderate loss</p>
+    </div>
+    <div class="stage-card stage-3b">
+      <h2>Stage 3b</h2>
+      <p><strong>eGFR:</strong> 30–44</p>
+      <p>Moderate to severe loss</p>
+    </div>
+    <div class="stage-card stage-4">
+      <h2>Stage 4</h2>
+      <p><strong>eGFR:</strong> 15–29</p>
+      <p>Severe kidney loss</p>
+    </div>
+    <div class="stage-card stage-5">
+      <h2>Stage 5</h2>
+      <p><strong>eGFR:</strong> &lt;15</p>
+      <p>Kidney failure / ESRD</p>
+    </div>
+  </div>
+</body>
+</html>
