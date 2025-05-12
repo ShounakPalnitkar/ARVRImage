@@ -3,121 +3,276 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CKD Funnel Diagram</title>
+  <title>CKD Progression Funnel with Visualizations</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f7;
-      text-align: center;
+      font-family: 'Arial', sans-serif;
+      background: #f5f7fa;
+      margin: 0;
       padding: 2rem;
+      color: #2d3748;
     }
 
-    h1 {
-      color: #2e3d49;
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
     }
 
     .funnel-container {
-      width: 300px;
-      margin: 2rem auto;
+      flex: 1;
+      min-width: 350px;
     }
 
     .funnel-stage {
       width: 100%;
-      height: 60px;
-      margin: -12px auto;
-      clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
-      background-color: #e0e0e0;
-      transition: background-color 0.3s ease;
+      height: 100px;
+      margin: -20px 0;
+      clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
       cursor: pointer;
-      line-height: 60px;
-      color: #fff;
-      font-weight: bold;
       position: relative;
+      background: #e2e8f0;
     }
 
-    .funnel-stage span {
-      position: absolute;
-      width: 100%;
+    .funnel-stage:hover {
+      transform: scale(1.02);
+      z-index: 2;
+    }
+
+    .stage-content {
       text-align: center;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    .stage-1.active { background-color: #43aa8b; }
-    .stage-2.active { background-color: #f9c74f; }
-    .stage-3.active { background-color: #f9844a; }
-    .stage-4.active { background-color: #f67280; }
-    .stage-5.active { background-color: #d62828; }
-
-    .buttons {
-      margin-top: 2rem;
-    }
-
-    .buttons button {
-      margin: 0.4rem;
-      padding: 0.6rem 1.2rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      background-color: #2e3d49;
+      padding: 1rem;
       color: white;
-      cursor: pointer;
-      transition: background-color 0.3s;
+      position: relative;
+      z-index: 1;
     }
 
-    .buttons button:hover {
-      background-color: #1b2a35;
+    .stage-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
     }
 
-    .info {
-      margin-top: 1rem;
-      font-size: 1rem;
-      color: #333;
+    .stage-eGFR {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .symptoms-container {
+      flex: 1;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      min-width: 400px;
+    }
+
+    .symptoms-list {
+      margin-top: 1.5rem;
+    }
+
+    .symptom-item {
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      background: #f8fafc;
+      border-left: 4px solid;
+      border-radius: 4px;
+      display: none;
+      animation: fadeIn 0.3s ease;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .symptom-item:hover {
+      transform: translateX(5px);
+      background: #edf2f7;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Stage Colors */
+    .stage-1 { background: #48bb78; border-color: #48bb78; }
+    .stage-2 { background: #ecc94b; border-color: #ecc94b; }
+    .stage-3 { background: #ed8936; border-color: #ed8936; }
+    .stage-4 { background: #f56565; border-color: #f56565; }
+    .stage-5 { background: #c53030; border-color: #c53030; }
+
+    .selected {
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.5), 0 4px 6px rgba(0,0,0,0.1);
+      z-index: 3;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .funnel-container, .symptoms-container {
+        min-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="funnel-container">
+      <div class="funnel-stage stage-1" data-stage="1">
+        <div class="stage-content">
+          <div class="stage-title">Stage 1</div>
+          <div class="stage-eGFR">eGFR ≥90</div>
+        </div>
+      </div>
+      <div class="funnel-stage stage-2" data-stage="2">
+        <div class="stage-content">
+          <div class="stage-title">Stage 2</div>
+          <div class="stage-eGFR">eGFR 60-89</div>
+        </div>
+      </div>
+      <div class="funnel-stage stage-3" data-stage="3">
+        <div class="stage-content">
+          <div class="stage-title">Stage 3</div>
+          <div class="stage-eGFR">eGFR 30-59</div>
+        </div>
+      </div>
+      <div class="funnel-stage stage-4" data-stage="4">
+        <div class="stage-content">
+          <div class="stage-title">Stage 4</div>
+          <div class="stage-eGFR">eGFR 15-29</div>
+        </div>
+      </div>
+      <div class="funnel-stage stage-5" data-stage="5">
+        <div class="stage-content">
+          <div class="stage-title">Stage 5</div>
+          <div class="stage-eGFR">eGFR &lt;15</div>
+        </div>
+      </div>
+    </div>
 
-  <h1>CKD Progression Funnel</h1>
-  <div class="funnel-container">
-    <div class="funnel-stage stage-1"><span>Stage 1: Normal Function</span></div>
-    <div class="funnel-stage stage-2"><span>Stage 2: Mild Loss</span></div>
-    <div class="funnel-stage stage-3"><span>Stage 3: Moderate Loss</span></div>
-    <div class="funnel-stage stage-4"><span>Stage 4: Severe Loss</span></div>
-    <div class="funnel-stage stage-5"><span>Stage 5: Kidney Failure</span></div>
+    <div class="symptoms-container">
+      <h2>Stage Details & Symptoms</h2>
+      <div class="symptoms-list" id="symptomsList">
+        <!-- Symptoms will be populated here -->
+      </div>
+    </div>
   </div>
-
-  <div class="buttons">
-    <button onclick="highlightStage(1)">Stage 1</button>
-    <button onclick="highlightStage(2)">Stage 2</button>
-    <button onclick="highlightStage(3)">Stage 3</button>
-    <button onclick="highlightStage(4)">Stage 4</button>
-    <button onclick="highlightStage(5)">Stage 5</button>
-  </div>
-
-  <div class="info" id="infoText">Click a button to view CKD stage.</div>
 
   <script>
-    function highlightStage(stage) {
-      const stages = document.querySelectorAll('.funnel-stage');
-      stages.forEach((el, index) => {
-        el.classList.remove('active');
-        if (index + 1 === stage) {
-          el.classList.add('active');
-        }
+    const stageData = {
+      1: {
+        title: "Stage 1: Kidney Damage with Normal Function",
+        description: "Normal kidney function with evidence of kidney damage through urine tests or imaging.",
+        eGFR: 95,
+        symptoms: [
+          "Usually asymptomatic",
+          "Possible proteinuria (protein in urine)",
+          "Mild high blood pressure",
+          "Normal urine output"
+        ]
+      },
+      2: {
+        title: "Stage 2: Mild Kidney Function Loss",
+        description: "Mild reduction in kidney function with evidence of kidney damage.",
+        eGFR: 75,
+        symptoms: [
+          "Fatigue after mild activity",
+          "Increased nighttime urination",
+          "Mild swelling in extremities",
+          "Slightly elevated blood pressure"
+        ]
+      },
+      3: {
+        title: "Stage 3: Moderate Kidney Function Loss",
+        description: "Moderate decline in kidney function (divided into 3a and 3b).",
+        eGFR: 45,
+        symptoms: [
+          "Persistent fatigue",
+          "Swelling in hands/feet",
+          "Back pain (kidney area)",
+          "Changes in urine color",
+          "High blood pressure",
+          "Mild anemia"
+        ]
+      },
+      4: {
+        title: "Stage 4: Severe Kidney Function Loss",
+        description: "Severe reduction in kidney function, preparing for renal replacement therapy.",
+        eGFR: 20,
+        symptoms: [
+          "Nausea and loss of appetite",
+          "Muscle cramps",
+          "Itchy skin (pruritus)",
+          "Shortness of breath",
+          "Sleep problems",
+          "Metallic taste in mouth"
+        ]
+      },
+      5: {
+        title: "Stage 5: Kidney Failure (ESRD)",
+        description: "End-stage renal disease requiring dialysis or transplant.",
+        eGFR: 10,
+        symptoms: [
+          "Severe fatigue/weakness",
+          "Persistent nausea/vomiting",
+          "Decreased urine output",
+          "Swelling throughout body",
+          "Confusion/difficulty concentrating",
+          "Chest pain (fluid buildup)"
+        ]
+      }
+    };
+
+    const stageColors = {
+      1: "#48bb78",
+      2: "#ecc94b",
+      3: "#ed8936",
+      4: "#f56565",
+      5: "#c53030"
+    };
+
+    const icons = [
+      "🛌", "🌙", "💧", "💊", "💡", "📉", "🤢", "🦶", "💤", "🌫", "💭", "😵"
+    ];
+
+    // Add event listeners to all funnel stages
+    document.querySelectorAll('.funnel-stage').forEach(stage => {
+      stage.addEventListener('click', function() {
+        // Remove previous selections
+        document.querySelectorAll('.funnel-stage').forEach(s => s.classList.remove('selected'));
+        this.classList.add('selected');
+
+        // Show symptoms
+        const stageNumber = this.dataset.stage;
+        showSymptoms(stageNumber);
       });
+    });
 
-      const stageTexts = {
-        1: "Stage 1 (eGFR ≥ 90): Normal kidney function.",
-        2: "Stage 2 (eGFR 60–89): Mild loss of kidney function.",
-        3: "Stage 3 (eGFR 30–59): Moderate loss, subdivided into 3a and 3b.",
-        4: "Stage 4 (eGFR 15–29): Severe kidney function loss.",
-        5: "Stage 5 (eGFR <15): Kidney failure (ESRD), dialysis or transplant needed."
-      };
+    function showSymptoms(stage) {
+      const data = stageData[stage];
+      const symptomsList = document.getElementById('symptomsList');
 
-      document.getElementById('infoText').innerText = stageTexts[stage];
-    }
-  </script>
+      // Create eGFR progress visualization (simulated ring)
+      const eGFRValue = data.eGFR;
+      const eGFRColor = stageColors[stage];
+      const circumference = 2 * Math.PI * 35;
+      const offset = circumference - (eGFRValue / 100) * circumference;
 
-</body>
-</html>
+      const eGFRRing = `
+        <div style="margin: 1rem 0; display: flex; align-items: center; gap: 1rem;">
+          <svg width="80" height="80">
+            <circle cx="40" cy="40" r="35" stroke="#e2e8f0" stroke-width="8" fill="none"/>
+            <circle cx="40" cy="40" r="35" stroke="${eGFRColor}" stroke-width="8"
+::contentReference[oaicite:0]{index=0}
+ 
